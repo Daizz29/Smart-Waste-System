@@ -47,5 +47,5 @@ const firebaseConfig = {
   $(document).ready(function(){
     addLocation(21.04335852336321, 105.81887631760785);
     showAllLoction();
-    window.alert("Hello Miracle");
+    window.alert("Hello");
   });
