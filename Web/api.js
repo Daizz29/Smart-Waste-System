@@ -31,7 +31,7 @@ const firebaseConfig = {
             Locations.push(loc);
             console.log(childSnapshot.val());
         });
-        var map = L.map('map').setView([21.001975258290276, 105.8031678199768], 10);
+        var map = L.map('map').setView([21.035959179422512, 105.79172918418396], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap'
@@ -45,7 +45,7 @@ const firebaseConfig = {
   }
 
   $(document).ready(function(){
-    addLocation(21.04335852336321, 105.81887631760785);
+    addLocation(21.035959179422512, 105.79172918418396);
     showAllLoction();
-    window.alert("Hello");
+    //window.alert("Hello");
   });
