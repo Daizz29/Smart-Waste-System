@@ -1,24 +1,24 @@
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBDY-3IobU92TqP7AXgSjKCSFALbfAjS0Q",
-    authDomain: "smartwastemanagementsyst-f67e6.firebaseapp.com",
-    databaseURL: "https://smartwastemanagementsyst-f67e6-default-rtdb.firebaseio.com",
-    projectId: "smartwastemanagementsyst-f67e6",
-    storageBucket: "smartwastemanagementsyst-f67e6.appspot.com",
-    messagingSenderId: "952007266067",
-    appId: "1:952007266067:web:0b846a7b87104e0ec854e6",
-    measurementId: "G-MD4HNCGT3D"
+    apiKey: "AIzaSyBQVS-8tk2dz8fVtUa2xyRce-xLTD8Lw0U",
+    authDomain: "study-5d590.firebaseapp.com",
+    databaseURL: "https://study-5d590-default-rtdb.firebaseio.com",
+    projectId: "study-5d590",
+    storageBucket: "study-5d590.appspot.com",
+    messagingSenderId: "489961472978",
+    appId: "1:489961472978:web:db942d99252971e7cbfe0b",
+    measurementId: "G-XW6HCK36N3"
   };
 
   firebase.initializeApp(firebaseConfig);
 
-  var locationDB = firebase.database().ref("location123/");
+  var locationDB = firebase.database().ref("waste/dich_vong/");
 
   const addLocation = (lat, lng) => {
     var newLocation = locationDB.push();
     newLocation.set({
-        latitude: lat,
-        longitude: lng,
+        lat: lat,
+        lng: lng,
     });
   };
 
@@ -27,7 +27,7 @@ const firebaseConfig = {
     locationDB.on('value', function(snapshot){
         var Locations = [];
         snapshot.forEach(function(childSnapshot){
-            var loc = {lat: childSnapshot.val().latitude, lng: childSnapshot.val().longitude};
+            var loc = {lat: childSnapshot.val().lat, lng: childSnapshot.val().lng};
             Locations.push(loc);
             console.log(childSnapshot.val());
         });
@@ -37,7 +37,7 @@ const firebaseConfig = {
             attribution: '© OpenStreetMap'
         }).addTo(map);
         var route = L.Routing.control({
-            show: true
+            show: false
         }).addTo(map);
         route.setWaypoints(Locations);
     });
@@ -45,7 +45,9 @@ const firebaseConfig = {
   }
 
   $(document).ready(function(){
-    addLocation(21.035959179422512, 105.79172918418396);
+    //addLocation(21.035959179422512, 105.79172918418396);
     showAllLoction();
     //window.alert("Hello");
+    map = document.getElementById("map");
+    map.requestFullscreen();
   });
