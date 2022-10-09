@@ -1,31 +1,49 @@
 body {
 	background-color: none;
 }
-
- {
-	color: navy;
-	margin-left: 20px;
-}
 title {
 	font: serif;
 }
+:root{
+	--transition-effect:0.25s cubic-bezier(.25,-0.78,.78,1.67) ;
+}
+#open-close {
+	margin-left: 150px;
 
-#button {
-	margin-left: 100px;
-	background-color: #000;
-    border: .5px solid crimson;
-    border-radius: 40px;
-    color: #fff;
-    padding: 30px;
-    box-shadow: 0 0 50px 0 crimson,
-                0 0 50px 0 crimson,
-                0 0 20px 0 crimson inset;
     z-index: 5;
     position: absolute;
+}
+.switch-toggle{
+	width: 45px;
+	height: 25px;
+	appearance: none;
+	background: #00b800;
+	border: .2px solid gray;
+	border-radius: 55px;
+	position: relative;
+	cursor: pointer;
+	box-shadow: inset 0px 0px 16px rgba(0,0,0,.3);
+}
+.switch-toggle::before{
+	content: "";
+	width: 23px;
+	height: 23px;
+	position: absolute;
+	top: 0.5px;
+	left: 0px;
+	background: #efe2bf;
+	border-radius: 50%;
+	transition: var(--transition-effect);
+}
+.switch-toggle:checked{
+	background: #ce0100;
+}
+.switch-toggle:checked:before{
+	left:20.5px;
 }
 #map {
 	z-index: 1;
 	position: relative; 
 	object-fit: cover;
-	height: 1000px;
+	height: 880px;
 }

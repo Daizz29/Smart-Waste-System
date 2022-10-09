@@ -22,6 +22,13 @@ const firebaseConfig = {
     });
   };
 
+  function getDB(){
+    db.on('value',function(snapshot){
+      var trash_state;
+      snapshot
+    });
+  }
+
   const showAllLoction = () => {
     
     locationDB.on('value', function(snapshot){
@@ -31,9 +38,9 @@ const firebaseConfig = {
             Locations.push(loc);
             console.log(childSnapshot.val());
         });
-        var map = L.map('map').setView([21.035959179422512, 105.79172918418396], 15);
+        var map = L.map('map').setView([21.035984, 105.791005], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 20,
             attribution: '© OpenStreetMap'
         }).addTo(map);
         var route = L.Routing.control({
@@ -43,11 +50,15 @@ const firebaseConfig = {
     });
     
   }
+  
 
   $(document).ready(function(){
     //addLocation(21.035959179422512, 105.79172918418396);
     showAllLoction();
     //window.alert("Hello");
     map = document.getElementById("map");
-    map.requestFullscreen();
+    //map.requestFullscreen();
+    document.getElementById("on-off").addEventListener("change",state);
+    
   });
+
