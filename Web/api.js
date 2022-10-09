@@ -93,7 +93,7 @@ const firebaseConfig = {
     map = document.getElementById("map");
     //map.requestFullscreen();
     firstState();
-    document.getElementById("on-off").addEventListener("change",changeState);
+    //document.getElementById("on-off").addEventListener("change",changeState);
     //while(false){
     //}
     
