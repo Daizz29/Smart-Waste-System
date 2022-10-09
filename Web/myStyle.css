@@ -4,6 +4,13 @@ body {
 title {
 	font: serif;
 }
+p{
+	font: serif;
+	margin-left: 55px;
+	margin-top: -30px;
+	align-items: flex;
+	color: #ce0100;
+}
 :root{
 	--transition-effect:0.25s cubic-bezier(.25,-0.78,.78,1.67) ;
 }

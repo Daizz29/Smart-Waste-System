@@ -22,12 +22,6 @@ const firebaseConfig = {
     });
   };
 
-  function getDB(){
-    db.on('value',function(snapshot){
-      var trash_state;
-      snapshot
-    });
-  }
 
   const showAllLoction = () => {
     
@@ -36,7 +30,7 @@ const firebaseConfig = {
         snapshot.forEach(function(childSnapshot){
             var loc = {lat: childSnapshot.val().lat, lng: childSnapshot.val().lng};
             Locations.push(loc);
-            console.log(childSnapshot.val());
+            //console.log(childSnapshot.val());
         });
         var map = L.map('map').setView([21.035984, 105.791005], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -50,6 +44,46 @@ const firebaseConfig = {
     });
     
   }
+  const firstState =() =>{
+    var initialState = [];
+    locationDB.on('value',function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var sta = childSnapshot.val().State;
+        initialState.push(sta);
+        //console.log(initialState[0]);
+        
+      });
+      //console.log(initialState);
+      var isSelected = document.getElementById('on-off').checked;
+      if(isSelected == false && initialState[0] == "close"){
+        document.getElementById('on-off').click();
+      }
+    });
+    /*console.log(initialState);
+    var isSelected = document.getElementById('on-off').checked;
+    if(isSelected == false && initialState[0] == "close"){
+      document.getElementById('on-off').click();
+    }*/
+    //console.log(initialState);
+  }
+  const  changeState = () =>{
+    var trash_state = [];
+    locationDB.on('value',function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var state = childSnapshot.val().State;
+        trash_state.push(state);
+      });
+      const postData1 ={
+        State:close
+      };
+      const postData2 ={
+        State:open
+      };
+      if(trash_state[0] == "close"){
+        
+      }
+    });
+  }
   
 
   $(document).ready(function(){
@@ -58,7 +92,10 @@ const firebaseConfig = {
     //window.alert("Hello");
     map = document.getElementById("map");
     //map.requestFullscreen();
-    document.getElementById("on-off").addEventListener("change",state);
+    firstState();
+    document.getElementById("on-off").addEventListener("change",changeState);
+    //while(false){
+    //}
     
   });
 
