@@ -13,6 +13,7 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
 
   var locationDB = firebase.database().ref("waste/dich_vong/");
+  //var trash_1 = firebase.database().ref("waste/dichvong/trash_1");
 
   const addLocation = (lat, lng) => {
     var newLocation = locationDB.push();
@@ -56,7 +57,7 @@ const firebaseConfig = {
       //console.log(initialState);
       var isSelected = document.getElementById('on-off').checked;
       if(isSelected == false && initialState[0] == "close"){
-        document.getElementById('on-off').click();
+        document.getElementById('on-off').checked = true;
       }
     });
     /*console.log(initialState);
@@ -68,21 +69,42 @@ const firebaseConfig = {
   }
   const  changeState = () =>{
     var trash_state = [];
+    var key_value =[];
     locationDB.on('value',function(snapshot){
       snapshot.forEach(function(childSnapshot){
         var state = childSnapshot.val().State;
         trash_state.push(state);
+        key_value.push(childSnapshot.key);
       });
-      const postData1 ={
-        State:close
-      };
-      const postData2 ={
-        State:open
-      };
+      /*var stateInit = firebase.database().ref("waste/dich_vong/"+key_value[0]+"/State/");
+      /*stateInit.on("value", function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+          console.log(childSnapshot.val());
+        });
+      })
+      console.log(trash_state);
+      const postData1 = "close";
+      const postData2 = "open";
+      var change_state = stateInit;
       if(trash_state[0] == "close"){
-        
-      }
+        change_state.set(postData2);
+      }else{
+        change_state.set(postData1);
+      }*/
     });
+      console.log(key_value);
+      var stateInit = firebase.database().ref("waste/dich_vong/"+key_value[0]+"/State/");
+      console.log(trash_state);
+      const postData1 = "close";
+      const postData2 = "open";
+      var change_state = stateInit;
+      if(trash_state[0] == "close"){
+        change_state.set(postData2);
+        document.getElementById('on-off').checked = false;
+      }else{
+        change_state.set(postData1);
+        document.getElementById('on-off').checked = true;
+      }
   }
   
 
@@ -93,7 +115,7 @@ const firebaseConfig = {
     map = document.getElementById("map");
     //map.requestFullscreen();
     firstState();
-    //document.getElementById("on-off").addEventListener("change",changeState);
+    document.getElementById("on-off").addEventListener("click",changeState);
     //while(false){
     //}
     
