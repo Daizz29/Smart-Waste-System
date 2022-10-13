@@ -45,7 +45,7 @@ const firebaseConfig = {
     });
     
   }
-  const firstState =() =>{
+  const currentState =() =>{
     var initialState = [];
     locationDB.on('value',function(snapshot){
       snapshot.forEach(function(childSnapshot){
@@ -58,6 +58,8 @@ const firebaseConfig = {
       var isSelected = document.getElementById('on-off').checked;
       if(isSelected == false && initialState[0] == "close"){
         document.getElementById('on-off').checked = true;
+      }else{
+        document.getElementById('on-off').checked = false;
       }
     });
     /*console.log(initialState);
@@ -114,10 +116,8 @@ const firebaseConfig = {
     //window.alert("Hello");
     map = document.getElementById("map");
     //map.requestFullscreen();
-    firstState();
+    setInterval(currentState(),1000);
     document.getElementById("on-off").addEventListener("click",changeState);
-    //while(false){
-    //}
     
   });
 
