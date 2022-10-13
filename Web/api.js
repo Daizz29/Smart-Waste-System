@@ -116,7 +116,7 @@ const firebaseConfig = {
     //window.alert("Hello");
     map = document.getElementById("map");
     //map.requestFullscreen();
-    setInterval(currentState(),1000);
+    setInterval(currentState(),100);
     document.getElementById("on-off").addEventListener("click",changeState);
     
   });
