@@ -1,13 +1,13 @@
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBDY-3IobU92TqP7AXgSjKCSFALbfAjS0Q",
-  authDomain: "smartwastemanagementsyst-f67e6.firebaseapp.com",
-  databaseURL: "https://smartwastemanagementsyst-f67e6-default-rtdb.firebaseio.com",
-  projectId: "smartwastemanagementsyst-f67e6",
-  storageBucket: "smartwastemanagementsyst-f67e6.appspot.com",
-  messagingSenderId: "952007266067",
-  appId: "1:952007266067:web:0b846a7b87104e0ec854e6",
-  measurementId: "G-MD4HNCGT3D"
+  apiKey: "AIzaSyD6PqjdmbzqiIikg-QfRLJRcgDb1IgWU68",
+  authDomain: "random-data-31454.firebaseapp.com",
+  databaseURL: "https://random-data-31454-default-rtdb.firebaseio.com",
+  projectId: "random-data-31454",
+  storageBucket: "random-data-31454.appspot.com",
+  messagingSenderId: "319436233994",
+  appId: "1:319436233994:web:4b687ce8000a26b685eef3",
+  measurementId: "G-9DH8PT1004"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -21,9 +21,9 @@ var LeafIcon = L.Icon.extend({
     popupAnchor:  [0, -40]
   }
 });
-var greenIcon = new LeafIcon({iconUrl: './Icon/greenMarker.png'});
-var yellowIcon = new LeafIcon({iconUrl: './Icon/yellowMarker.png'});
-var redIcon = new LeafIcon({iconUrl: './Icon/redMarker.png'});
+var greenIcon = new LeafIcon({iconUrl: './Icon/green-bin-icon.png'});
+var yellowIcon = new LeafIcon({iconUrl: './Icon/yellow-bin-icon.png'});
+var redIcon = new LeafIcon({iconUrl: './Icon/red-bin-icon.png'});
 /*const addLocation = (lat, lng) => {
   var newLocation = locationDB.push();
   newLocation.set({
@@ -104,22 +104,19 @@ function routing(Locations, map, route){
   routeArr.push(route);
   return routeArr;
 }
-
-async function showRoute(map){
-  var Locations = [];
-  locationDB.on('value', function(snapshot){
+var Locations = [];
+function showRoute(map){
   
+  locationDB.on('value', function(snapshot){
+    console.log(Locations);
     snapshot.forEach(function(childSnapshot){
       var loc = {key: childSnapshot.key, lat: childSnapshot.val().latitde, lng: childSnapshot.val().longtitde, cap: childSnapshot.val().capacity};
       Locations.push(loc);
       console.log(childSnapshot.val());
     });
-    //console.log(routing(Locations, map, null));
-    console.log("inside function");
+    
     return routing(Locations, map, null);
   });
-  console.log("outside function");
-  //console.log(Locations);
 }
 
 const updateData = (map, routeArr) => {
@@ -146,9 +143,8 @@ $(document).ready(function(){
       maxZoom: 19,
       attribution: '© OpenStreetMap'
   }).addTo(map);
-  var routeControl = showRoute(map);
-  console.log("before update: ", routeControl);
-  routeControl = updateData(map, routeControl);
+  var rout = showRoute(map);
+  rout = updateData(map, rout);
   
   //console.log("after update: ", routeControl);
   //updateData();
