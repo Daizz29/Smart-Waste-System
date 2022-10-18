@@ -15,19 +15,20 @@ const firebaseConfig = {
   var locationDB = firebase.database().ref("waste/dich_vong/");
   //var trash_1 = firebase.database().ref("waste/dichvong/trash_1");
 
-  const addLocation = (lat, lng) => {
+  /*const addLocation = (lat, lng) => {
     var newLocation = locationDB.push();
     newLocation.set({
         lat: lat,
         lng: lng,
     });
-  };
+  };*/
 
 
   const showAllLoction = () => {
     
     locationDB.on('value', function(snapshot){
         var Locations = [];
+        var marker = [];
         snapshot.forEach(function(childSnapshot){
             var loc = {lat: childSnapshot.val().lat, lng: childSnapshot.val().lng};
             Locations.push(loc);
@@ -39,13 +40,20 @@ const firebaseConfig = {
             attribution: '© OpenStreetMap'
         }).addTo(map);
         var route = L.Routing.control({
-            show: false
+            show: true
         }).addTo(map);
         route.setWaypoints(Locations);
+        for(let i = 0; i< Locations.length;i++){
+          marker[i] = L.marker(Locations[i]).addTo(map);
+          marker[i].bindPopup("<b>Hello world!</b><br>I am a popup.");
+        }
+        //marker = L.marker(Locations[0]).addTo(map);
+        //marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
     });
     
   }
-  const currentState =() =>{
+  // Ham currentState nham hien thi trang thai hien tai cua thung rac va dua vao nut bam cho tuong ung
+  const currentState =(initialState) =>{
     var initialState = [];
     locationDB.on('value',function(snapshot){
       snapshot.forEach(function(childSnapshot){
@@ -62,13 +70,8 @@ const firebaseConfig = {
         document.getElementById('on-off').checked = false;
       }
     });
-    /*console.log(initialState);
-    var isSelected = document.getElementById('on-off').checked;
-    if(isSelected == false && initialState[0] == "close"){
-      document.getElementById('on-off').click();
-    }*/
-    //console.log(initialState);
   }
+  //ham changeState nham bien doi trang thai cua thung rac khi click vao nut bam
   const  changeState = () =>{
     var trash_state = [];
     var key_value =[];
@@ -78,21 +81,6 @@ const firebaseConfig = {
         trash_state.push(state);
         key_value.push(childSnapshot.key);
       });
-      /*var stateInit = firebase.database().ref("waste/dich_vong/"+key_value[0]+"/State/");
-      /*stateInit.on("value", function(snapshot){
-        snapshot.forEach(function(childSnapshot){
-          console.log(childSnapshot.val());
-        });
-      })
-      console.log(trash_state);
-      const postData1 = "close";
-      const postData2 = "open";
-      var change_state = stateInit;
-      if(trash_state[0] == "close"){
-        change_state.set(postData2);
-      }else{
-        change_state.set(postData1);
-      }*/
     });
       console.log(key_value);
       var stateInit = firebase.database().ref("waste/dich_vong/"+key_value[0]+"/State/");
@@ -118,6 +106,5 @@ const firebaseConfig = {
     //map.requestFullscreen();
     setInterval(currentState(),100);
     document.getElementById("on-off").addEventListener("click",changeState);
-    
   });
 
