@@ -80,10 +80,10 @@ function routing(Locations, map, route){
         draggableWaypoints: false,
         createMarker: function(i, start, n){
           var markerIcon = null;
-          if(Route[i].cap <= 30){
+          if(Route[i].cap <= 40){
             markerIcon = greenIcon;
           }
-          else if(Route[i].cap > 30 && Route[i].cap < 70){
+          else if(Route[i].cap > 40 && Route[i].cap <= 70){
             markerIcon = yellowIcon;
           }
           else{
