@@ -76,7 +76,7 @@ function routing(Locations, map, route){
   if(route == null){
     console.log("Initial route");
     route = L.Routing.control({
-        show: true,
+        show: false,
         draggableWaypoints: false,
         createMarker: function(i, start, n){
           var markerIcon = null;
@@ -149,7 +149,7 @@ const  changeState = () =>{
   var key_value =[];
   locationDB.on('value',function(snapshot){
     snapshot.forEach(function(childSnapshot){
-      var state = childSnapshot.val().State;
+      var state = childSnapshot.val().state;
       trash_state.push(state);
       key_value.push(childSnapshot.key);
     });
