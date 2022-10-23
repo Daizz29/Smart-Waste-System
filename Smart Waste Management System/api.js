@@ -32,10 +32,6 @@ var redIcon = new LeafIcon({iconUrl: './Icon/red-bin-icon.png'});
   });
 };*/
 
-function findLocation(location, keyLoc){
-  return location.key == keyLoc;
-}
-
 function distanceBetween2Node(start, dest){
   var startPoint = L.latLng(start.lat, start.lng);
   var destPoint = L.latLng(dest.lat, dest.lng);
@@ -55,10 +51,16 @@ function distanceBetween2Node(start, dest){
 
 function routing(Locations, map, route){
   var Route = [];
+  var GreenBin = [];
   let startLoc = Locations[0];
-  let nextLoc = Locations[0];
   Locations.splice(0, 1);
-  Route.push(startLoc);
+  if(startLoc.cap <= 40){
+    GreenBin.push(startLoc);
+  }
+  else{
+    Route.push(startLoc);
+  }
+  let nextLoc;
   while(Locations.length != 0){
     var minDist = 10000000;
     Locations.forEach(function(unvisited){
@@ -69,7 +71,12 @@ function routing(Locations, map, route){
       }
     });
     startLoc = nextLoc;
-    Route.push(nextLoc);
+    if(nextLoc.cap <= 40){
+      GreenBin.push(nextLoc);
+    }
+    else{
+      Route.push(nextLoc);
+    }
     var index = Locations.indexOf(nextLoc);
     Locations.splice(index, 1);
   }
@@ -101,6 +108,9 @@ function routing(Locations, map, route){
     }).addTo(map);
   }
   route.setWaypoints(Route);
+  GreenBin.forEach(function(childSnapshot){
+    L.marker([childSnapshot.lat, childSnapshot.lng], {icon: greenIcon}).addTo(map);
+  });
   var routeArr = [];
   routeArr.push(Route);
   routeArr.push(route);
