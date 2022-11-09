@@ -1,0 +1,33 @@
+<div class="map mt-5 pt-md-5">
+    <div id="map" style="height: 1000px"></div> 
+</div>
+<script>
+    var loc = decodeURIComponent("{{{list}}}");
+    console.log(loc);
+    loc = JSON.parse(loc);
+    console.log(loc[0].latitude);
+    var Locations = [];
+    loc.forEach(function(lc){
+        Locations.push({lat: (lc.latitude), lng: Number(lc.longtitude), cap: Number(lc.capacity)});
+    });
+    console.log(Locations);
+    
+    var LeafIcon = L.Icon.extend({
+    options: {
+        iconSize:     [38, 40],
+        iconAnchor:   [19, 40],
+        popupAnchor:  [0, -40]
+    }
+    });
+    var greenIcon = new LeafIcon({iconUrl: './Icon/green-bin-icon.png'});
+    var yellowIcon = new LeafIcon({iconUrl: './Icon/yellow-bin-icon.png'});
+    var redIcon = new LeafIcon({iconUrl: './Icon/red-bin-icon.png'});
+    $(document).ready(function(){
+        var map = L.map("map").setView([21.001975258290276, 105.8031678199768], 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+        routing(Locations, map, null);
+    });
+</script>
