@@ -178,6 +178,9 @@ const  changeState = () =>{
       document.getElementById('on-off').checked = true;
     }
 }
+function Present(){
+  document.getElementById("present").style.display = "none";
+}
 
 $(document).ready(function(){
   //addLocation(21.0036985859343, 105.80643995586865);
@@ -192,6 +195,7 @@ $(document).ready(function(){
   
   setInterval(currentState(),100);
   document.getElementById("on-off").addEventListener("click",changeState);
+  Present();
   //console.log("after update: ", routeControl);
   //updateData();
   //window.alert("Hello Miracle");

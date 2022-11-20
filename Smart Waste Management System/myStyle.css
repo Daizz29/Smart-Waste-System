@@ -48,6 +48,15 @@ p{
 .switch-toggle:checked:before{
 	left:20.5px;
 }
+#present {
+	margin-left: 10px;
+	width: 150px;
+	height: 50px;
+	color: aqua;
+	background-color: aqua;
+	z-index: 4;
+	position: absolute;
+}
 #map {
 	z-index: 1;
 	position: relative; 
