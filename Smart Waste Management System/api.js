@@ -1,4 +1,5 @@
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyD6PqjdmbzqiIikg-QfRLJRcgDb1IgWU68",
   authDomain: "random-data-31454.firebaseapp.com",
@@ -9,6 +10,7 @@ const firebaseConfig = {
   appId: "1:319436233994:web:4b687ce8000a26b685eef3",
   measurementId: "G-9DH8PT1004"
 };
+
 
 firebase.initializeApp(firebaseConfig);
 
@@ -166,6 +168,11 @@ const  changeState = () =>{
   });
     console.log(key_value);
     var stateInit = firebase.database().ref("waste/"+key_value[0]+"/state/");
+    const mqtt = require("mqtt");
+    var client = mqtt.connect('mqtt://171.244.173.204:8579');
+    client.on('connect',()=>{
+      console.log("connected.");
+    });
     console.log(trash_state);
     const postData1 = "close";
     const postData2 = "open";
@@ -173,11 +180,20 @@ const  changeState = () =>{
     if(trash_state[0] == "close"){
       change_state.set(postData2);
       document.getElementById('on-off').checked = false;
+      client.on('connect', () =>{
+        client.subscribe('wasteManagement');
+        client.publish("wasteManagement/waste2/control/", '{"state":"open"}');
+      });
     }else{
       change_state.set(postData1);
       document.getElementById('on-off').checked = true;
+      client.on('connect', () =>{
+        client.subscribe("wasteManagement");
+        client.publish("wasteManagement/waste2/control/", '{"state":"close"}');
+      });
     }
 }
+
 function Present(){
   document.getElementById("present").style.display = "none";
 }
