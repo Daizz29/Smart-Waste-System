@@ -1,0 +1,17 @@
+.test {
+    height: 100%;
+    width: 100px;
+    position: fixed;
+    text-align: center;
+    
+}
+.list { 
+    padding-left: 0px;
+    width: 100%;
+    text-align: center;
+    line-height: 100px;
+}
+.list li a{
+    text-decoration: none;
+    
+}

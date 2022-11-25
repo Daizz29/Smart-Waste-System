@@ -7,6 +7,10 @@ var wasteSchema = new mongoose.Schema({
         type: String,
         default: "0"
     },
+    name: {
+        type: String,
+        default: ""
+    },
     state: {
         type: String,
         default: "open"
