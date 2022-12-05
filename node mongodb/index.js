@@ -12,21 +12,27 @@ const server = require('http').createServer(app);
 const {Server} = require('socket.io');
 const io = new Server(server);
 const mqtt = require("mqtt");
+const session = require("express-session");
 //const webSocket = require('ws');
 //const wss = new WebSocket.Server({server: server});
 
 const wasteController = require('./controllers/wasteController');
+const accountController = require('./controllers/accountController');
 
 
 app.use(bodyparser.urlencoded({extended: false}));
 app.use(bodyparser.json());
 
 app.use(express.static('public'));
+app.use(session({
+    secret: "ai201203AL104101me",
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000*3 }
+}));
 
 app.get("/", (req, res) =>{
-    res.send('<h2> Hello World </h2>');
-
-    
+    res.render("main_views/index", {layout: false});
 })
 
 app.set('views', path.join(__dirname, '/views/'));
@@ -85,3 +91,4 @@ server.listen(3000, async () =>{
 });
 
 app.use('/waste', wasteController);
+app.use('/account', accountController);

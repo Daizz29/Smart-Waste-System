@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 var wasteSchema = new mongoose.Schema({
-    latitude: JSON,
+    latitude: String,
     longtitude: String,
     capacity: {
         type: String,

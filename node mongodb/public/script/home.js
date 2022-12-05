@@ -26,7 +26,48 @@ function routing(Locations){
     }
     return Route;
 }
+
+function checkForRouting(Locations, path){
+    var count = 0;
+    Locations.forEach(function(loc){
+        if(loc.cap >= 70){
+            count++;
+            if(!path.includes(loc)){
+                path.push(loc);
+            }
+            
+        }
+        
+    });
+    if(count/Locations.length >= 0.6){return true;}
+    return false;
+}
   
+function creatMarker(loc){
+    var markerIcon = null;
+    if(loc.cap <= 30){
+        markerIcon = greenIcon;
+    }
+    else if(loc.cap > 30 && loc.cap < 70){
+        markerIcon = yellowIcon;
+    }
+    else{
+        markerIcon = redIcon;
+    }
+    var marker = L.marker([loc.lat, loc.lng], {icon: markerIcon}).on("click", function(e){
+        const infor = document.getElementById("infor");
+        infor.style.display = "block";
+        document.getElementById("name").innerHTML = loc.name;
+        document.getElementById("cap").innerHTML = loc.cap;
+        document.getElementById("state").innerHTML = loc.state;
+        document.getElementById("nameInput").value = loc.name;
+        document.getElementById("stateInput").value = loc.state;
+        document.getElementById("capInput").value = loc.cap;
+        document.getElementById("idInput").value = JSON.stringify(loc.key);
+    });
+    return marker;
+}
+
 function sendAjax(){
     const name = document.getElementById("nameInput").value;
     const state = document.getElementById("stateInput").value;
@@ -68,39 +109,17 @@ var redIcon = new LeafIcon({iconUrl: './Icon/red-bin-icon.png'});
 
 $(document).ready(async function(){
     var socket = io();
+    var path = [];
     var map = L.map("map").setView([21.001975258290276, 105.8031678199768], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(map);
     var route = L.Routing.control({
-        show: true,
+        show: false,
         draggableWaypoints: false,
         createMarker: function(i, start, n){
-            var markerIcon = null;
-            if(loc[i].cap <= 30){
-                markerIcon = greenIcon;
-            }
-            else if(loc[i].cap > 30 && loc[i].cap < 70){
-                markerIcon = yellowIcon;
-            }
-            else{
-                markerIcon = redIcon;
-            }
-            var marker = L.marker(start.latLng, {icon: markerIcon}).on("click", function(e){
-                console.log(this.getLatLng());
-                console.log(loc[i].cap);
-                console.log(loc[i].key);
-                const infor = document.getElementById("infor");
-                infor.style.display = "block";
-                document.getElementById("name").innerHTML = loc[i].name;
-                document.getElementById("cap").innerHTML = loc[i].cap;
-                document.getElementById("state").innerHTML = loc[i].state;
-                document.getElementById("nameInput").value = loc[i].name;
-                document.getElementById("stateInput").value = loc[i].state;
-                document.getElementById("capInput").value = loc[i].cap;
-                document.getElementById("idInput").value = JSON.stringify(loc[i].key);
-            });
+            var marker = creatMarker(path[i]);
             if(i == 0){
                 marker = marker.bindPopup("Start point");
                 setTimeout(() => {
@@ -110,10 +129,28 @@ $(document).ready(async function(){
             return marker;
         }
     }).addTo(map);
-    loc = await routing(loc);
-    console.log(loc);
-    route.setWaypoints(loc);
-
+    if(checkForRouting(loc, path)){
+        path = await routing(path);
+        console.log(path);
+        route.setWaypoints(path);
+        loc.forEach(function(lc){
+            if(!path.includes(lc)){
+                if(lc.cap <= 30){
+                    creatMarker(lc).addTo(map);
+                }
+                else if(lc.cap > 30 && lc.cap < 70){
+                    creatMarker(lc).addTo(map);
+                }
+            }
+        });
+    }
+    else{
+        map.setView([loc[0].lat, loc[0].lng], 17)
+        loc.forEach(function(lc){
+            creatMarker(lc).addTo(map);
+        });
+    }
+    
     /*setInterval(() => {
         if(loc.length != 0){
             var temp = loc.splice(0, 1);
@@ -121,23 +158,42 @@ $(document).ready(async function(){
             L.marker(temp[0], {icon: greenIcon}).addTo(map);
         }
     }, 3000);*/
-    socket.on('change stream', function(msg){
-        console.log(msg);
-        console.log(msg.data.capacity);
-        loc.forEach(async function(Loc){
-            if(JSON.stringify(Loc.key) === JSON.stringify(msg.id._id)){
-                console.log("141");
-                if(msg.data.capacity != null){
-                    Loc.cap = Number(msg.data.capacity);
-                    loc = await routing(loc);
-                    console.log(loc);
-                    route.setWaypoints(loc);
+    socket.on('change stream', async function(msg){
+        var locI = loc.findIndex(e => JSON.stringify(e.key) === JSON.stringify(msg.id._id));
+        var pathI = path.findIndex(e => JSON.stringify(e.key) === JSON.stringify(msg.id._id));
+        if(msg.data.capacity != null){
+            loc[locI].cap = Number(msg.data.capacity);
+            if(pathI > -1 && Number(msg.data.capacity) >= 70){
+                path[pathI].cap = Number(msg.data.capacity);
+            }
+            else if(pathI > -1 && Number(msg.data.capacity) < 70){
+                path.splice(pathI, 1);
+                creatMarker(loc[locI]).addTo(map);
+            }
+            else{
+                map.eachLayer(function(layer){
+                    if(layer._latlng != null && layer._latlng.lat == loc[locI].lat && layer._latlng.lng == loc[locI].lng){
+                        console.log("141");
+                        map.removeLayer(layer);
+                        return;
+                    }
+                });
+                if(pathI == -1 && Number(msg.data.capacity) >= 70){
+                    path.push(loc[locI]);
                 }
-                if(msg.data.state != null){
-                    Loc.state = msg.data.state;
+                else{
+                    let marker = creatMarker(loc[locI]);
+                    map.addLayer(marker);
                 }
             }
-        });
+        }
+        if(msg.data.state != null){
+            loc[locI].state = msg.data.state;
+            if(pathI > -1){
+                path[pathI].state = msg.data.state;
+            }
+        }
+        
         if(infor.style.display === "block" && document.getElementById("idInput").value === JSON.stringify(msg.id._id)){
             if(msg.data.capacity != null){
                 document.getElementById("cap").innerHTML = Number(msg.data.capacity);
@@ -146,10 +202,17 @@ $(document).ready(async function(){
                 document.getElementById("state").innerHTML = msg.data.state;
             }
         }
-        
+        if(checkForRouting(loc, path)){
+            path = await routing(path);
+            route.setWaypoints(path);
+        }
+        else{
+            route.setWaypoints([]);
+            path.forEach(function(lc){
+                creatMarker(lc).addTo(map);
+            });
+        }
     });
-    
-    
 });
 
 

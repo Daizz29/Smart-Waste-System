@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb+srv://Miracle:miracle141@cluster0.jzardua.mongodb.net/sample_airbnb?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://Miracle:miracle141@cluster0.jzardua.mongodb.net/waste_management_system?retryWrites=true&w=majority", {
     useNewUrlParser: true
 },
 err => {
@@ -15,3 +15,4 @@ err => {
 
 
 require('./Waste');
+require('./Account');

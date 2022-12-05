@@ -5,23 +5,28 @@ const Waste = mongoose.model('Waste');
 const mqtt = require("mqtt");
 
 router.get('/', async (req, res) => {
-    Waste.find((err,docs) =>{
-        if(!err){
-            var list = [];
-            docs.forEach(function(doc){
-                list.push({key: doc._id, lat: Number(doc.latitude), lng: Number(doc.longtitude), cap: Number(doc.capacity), name: doc.name, state: doc.state});
-            });
-            console.log(list);
-            res.render('main_views/home', {
-                script: "home.js",
-                style: "home.css",
-                list: encodeURIComponent(JSON.stringify(list))
-            });
-        }
-        else{
-            console.log("Error!");
-        }
-    });
+    if(req.session.User){
+        Waste.find((err,docs) =>{
+            if(!err){
+                var list = [];
+                docs.forEach(function(doc){
+                    list.push({key: doc._id, lat: Number(doc.latitude), lng: Number(doc.longtitude), cap: Number(doc.capacity), name: doc.name, state: doc.state});
+                });
+                console.log(list);
+                res.render('main_views/home', {
+                    script: "home.js",
+                    style: "home.css",
+                    list: encodeURIComponent(JSON.stringify(list))
+                });
+            }
+            else{
+                console.log("Error!");
+            }
+        });
+    }
+    else{
+        res.redirect("http://localhost:3000");
+    }
     /*let docs = await Waste.find().exec();
     res.render('main_views/home', {
         script: "home.js",
