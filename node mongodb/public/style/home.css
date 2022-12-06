@@ -11,10 +11,33 @@
     z-index: 1;
 }
 #infor {
+    margin-left: 0px;
     height: 300px;
     width: 300px;
     display: none;
-    z-index: 2;
-    background-color: aqua;
+    z-index: 5;
+    background-color: #ffffe6;
     position: absolute;
+    border-bottom-right-radius:5% ;
+    opacity: 0.9;
+}
+h3{
+    color: red;
+    font-size: 30px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h4{
+    text-align: justify;
+    position: fixed;
+    font-family: verdana;
+    line-height: 1.4;
+}
+#cap{
+    position: relative;
+    text-align: center;
+}
+#state{
+    position: relative;
+    text-align: center;
 }
