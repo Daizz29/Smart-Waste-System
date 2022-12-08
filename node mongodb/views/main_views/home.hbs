@@ -1,15 +1,26 @@
 
 <div class="map">
     <div id="infor">
-        <h3 id="name"></h3>
+        <h2 id="name"></h2>
         <input type="hidden" name="name" id="nameInput" />
         <input type="hidden" name="id" id="idInput" />
         <input type="hidden" name="state" id="stateInput" />
         <input type="hidden" name="cap" id="capInput" />
         <br>
-        <h4>Capacity: <h4 id="cap"></h4></h4>
-        <h4>State: <h4 id="state"></h4></h4>        
-        <input type="button" id="openBtn" value="Open" onclick="sendWs()" />
+        <div class="field">
+            <span>Capacity: <span id="cap"></span>%<br/>
+        </div>
+        <div class="field">
+            <div class="state_field">
+                <span>State: </span><!--<span id="state"></span>-->
+            </div>
+            <div id="open-close">
+                <input type="checkbox" name="state" class="switch-toggle" id="on-off" >
+            </div> 
+            <div class="loader_container">
+                <span id="loader"></span>
+            </div>
+        </div>
     </div>
     <div id="map"></div> 
 </div>
@@ -18,8 +29,7 @@
     
     var loc = decodeURIComponent("{{{list}}}");
     loc = JSON.parse(loc);
-    console.log(loc);
-    console.log(loc[0].lat);
-    
+    var path = decodeURIComponent("{{{path}}}");
+    path = JSON.parse(path);
     
 </script>

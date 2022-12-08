@@ -9,7 +9,7 @@ router.post('/login', async (req, res) =>{
         password: req.body.pass
     });
     if(result){
-        req.session.User = result._id;
+        req.session.user = result._id;
         req.session.save(() =>{
             res.redirect("http://localhost:3000/waste");
         });

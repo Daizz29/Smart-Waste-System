@@ -26,13 +26,18 @@ app.use(bodyparser.json());
 app.use(express.static('public'));
 app.use(session({
     secret: "ai201203AL104101me",
-    resave: true,
+    resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000*3 }
+    cookie: { maxAge: 60000*60*3 }
 }));
 
 app.get("/", (req, res) =>{
-    res.render("main_views/index", {layout: false});
+    if(req.session.user){
+        res.redirect("http://localhost:3000/waste");
+    }
+    else{
+        res.render("main_views/index", {layout: false});
+    }
 })
 
 app.set('views', path.join(__dirname, '/views/'));
