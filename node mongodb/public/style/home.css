@@ -1,0 +1,114 @@
+.map {
+    height: 100%;
+    width: auto;
+    margin-left: 50px;
+    position: relative;
+    z-index: 1;
+}
+#map {
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+#infor {
+    margin-left: 0px;
+    width: 250px;
+    display: none;
+    z-index: 2;
+    background-color: #eeeeee;
+    position: absolute;
+    border-radius: 10px;
+    right: 10px;
+    top: 10px;
+    opacity: 0.7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h2{
+    color: #00b300;
+    font-weight: 700;
+    text-align: center;
+    padding: 20px 0 20px 0;
+    border-bottom: 1px solid silver;
+}
+.field{
+    font-size: 20px;
+    padding-left: 20px;
+    padding-top: 5px;
+    margin: 10px 0;
+    position: relative;
+    margin-bottom: 20px;
+}
+.state_field{
+    position: fixed;
+    height: 30px;
+}
+
+:root{
+	--transition-effect:0.25s cubic-bezier(.25,-0.78,.78,1.67) ;
+}
+#open-close {
+    height: 30px;
+	margin-left: 80px;
+    z-index: 5;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.switch-toggle{
+	width: 45px;
+	height: 25px;
+	appearance: none;
+	background: #00b800;
+	border: .2px solid gray;
+	border-radius: 55px;
+	position: relative;
+	cursor: pointer;
+	box-shadow: inset 0px 0px 16px rgba(0,0,0,.3);
+}
+.switch-toggle::before{
+	content: "";
+	width: 23px;
+	height: 23px;
+	position: absolute;
+	top: 0.5px;
+	left: 0px;
+	background: #efe2bf;
+	border-radius: 50%;
+	transition: var(--transition-effect);
+}
+.switch-toggle:checked{
+	background: #ce0100;
+}
+.switch-toggle:checked:before{
+	left:20.5px;
+}
+
+#loader {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    position: absolute;
+    border: 5px solid gray;
+    border-bottom-color: #FF3D00;
+    border-radius: 50%;
+    display: none;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    
+}
+
+@keyframes rotation {
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+} 
+.loader_container{
+    height: 30px;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: -20px;
+    text-align: center;
+}
