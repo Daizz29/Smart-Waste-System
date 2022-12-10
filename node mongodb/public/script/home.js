@@ -103,7 +103,7 @@ function sendWs(){
         if(document.getElementById("loader").style.display === "inline-block"){
             document.getElementById("loader").style.display = "none"
         }
-    }, 5000);
+    }, 10000);
 }
 var LeafIcon = L.Icon.extend({
 options: {
