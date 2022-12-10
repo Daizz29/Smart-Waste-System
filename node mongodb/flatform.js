@@ -15,9 +15,11 @@ async function main(){
         try{
             await client.connect();
             if(topicArr.length > 2){
-                await upsertListingByName(client, name, {
-                    "state": JSON.parse(payload.toString())
-                });
+		if(topicArr[2] === "state"){
+                	await upsertListingByName(client, name, {
+                    		"state": JSON.parse(payload.toString())
+                	});
+		}
             }
             else{
                 let jsonObject = JSON.parse(payload.toString());
