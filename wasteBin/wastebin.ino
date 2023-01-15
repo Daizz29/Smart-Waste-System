@@ -195,6 +195,17 @@ void wasteBinData(){
   capacity = 100 - (distance/deepOfWaste)*100;
   delay(500);
 
+  // if waste is full, close the bin.
+  if (capacity == 100){
+    if (!strcmp(state1, open)){ // equal to (strcmp(state1, open) == 0)
+      for(int i=0; i <6; i++){
+          stateChange[i] = close[i];
+        }
+        Serial.println("close");
+    }
+
+  }
+
   // fake cap of waste2,3,4,5,6
   unsigned long now = millis();
   if (now - lastMsg > 3000) {
@@ -255,5 +266,8 @@ void loop() {
   client.loop();
   wasteBinData();
   publish();
-  delay (5000);
+  delay (2000);
 }
+
+
+
