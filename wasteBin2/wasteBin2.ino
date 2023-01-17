@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
-#include <Servo.h>     
+#include <Servo.h> 
 
 //Wifi and mqtt_broker
 const char* ssid = "IoT-LAB";
@@ -14,57 +14,20 @@ unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE (100)
 
 // servo
-#define TURN_TIME 455
+#define TURN_TIME 410
 Servo myservo; 
 const int servoPin = D4;
 
-
-// waste1
-char waste1[MSG_BUFFER_SIZE];
-char waste1Ctrl[MSG_BUFFER_SIZE];
-int cap1 = 0;
-float long1 = 105.8492;
-float lat1 = 21.02664;
-char state1[6];
+// waste2
+char waste2[MSG_BUFFER_SIZE];
+int capacity2;
+int cap2;
+float long2 = 105.8478;
+float lat2= 21.02926;
+char state2[6];
 char stateChange[6] = "open";
 char open[5]= "open";
 char close[6]= "close";
-
-
-// waste2
-// char waste2[MSG_BUFFER_SIZE];
-// int cap2 = 15;
-// bool state2;
-// float long2 = 105.8478;
-// float lat2= 21.02926;
-
-// waste3
-char waste3[MSG_BUFFER_SIZE];
-int cap3 = 25;
-bool state3;
-float long3 = 105.84998;
-float lat3 = 21.028;
-
-// waste4
-char waste4[MSG_BUFFER_SIZE];
-int cap4 = 60;
-bool state4;
-float long4 = 105.85;
-float lat4 = 21.02985;
-
-// waste5
-char waste5[MSG_BUFFER_SIZE];
-int cap5 = 75;
-bool state5;
-float long5 = 105.851;
-float lat5 = 21.0308;
-
-// waste6
-char waste6[MSG_BUFFER_SIZE];
-int cap6 = 99;
-bool state6;
-float long6 = 105.8489;
-float lat6 = 21.03051;
 
 // wasteBin
 const int trigPin = D1;
@@ -114,25 +77,25 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.println(state);
     if(state == false){
 
-    // close the pin
-    myservo.write(0); // Start turning clockwise
-    delay(TURN_TIME); // Go on turning for the right duration
-    myservo.write(90);// Stop turning
+      // close the pin
+      myservo.write(0); // Start turning clockwise
+      delay(TURN_TIME); // Go on turning for the right duration
+      myservo.write(90);// Stop turning
 
       for(int i=0; i <6; i++){
           stateChange[i] = close[i]; 
       }      
       Serial.println("close");
     }else{
-    // open the pin
-    myservo.write(180); // Start turning anti-clockwise
-    delay(TURN_TIME); // Go on turning for the right duration
-    myservo.write(90);// Stop turning
+      // open the pin
+      myservo.write(180); // Start turning anti-clockwise
+      delay(TURN_TIME); // Go on turning for the right duration
+      myservo.write(90);// Stop turning
         for(int i=0; i <6; i++){
           stateChange[i] = open[i];
         }
         Serial.println("open");
-      }  
+    }  
   Serial.println();
   Serial.println("-----------------------");
 }
@@ -151,7 +114,7 @@ void reconnect() {
       // Once connected, publish an announcement...
       // client.publish("wasteManagement", "hello world");
       // ... and resubscribe
-      client.subscribe("wasteManagement/waste1/control");
+      client.subscribe("wasteManagement/waste2/control");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -163,26 +126,11 @@ void reconnect() {
 }
 
 void publish() {
-    stateAssign(state1);
-    snprintf (waste1, MSG_BUFFER_SIZE," { \"latitude\": \"%f\",\"longtitude\": \"%f\",  \"capacity\": \"%d\", \"state\": \"%s\" } " ,lat1,long1,capacity, state1);
-    client.publish("wasteManagement/waste1/status", waste1, true); 
+    stateAssign(state2);
+    snprintf (waste2, MSG_BUFFER_SIZE," { \"latitude\": \"%f\",\"longtitude\": \"%f\",  \"capacity\": \"%d\", \"state\": \"%s\"} " ,lat2,long2,capacity2, state2);
+    client.publish("wasteManagement/waste2/status", waste2, true);
 
-    // snprintf (waste2, MSG_BUFFER_SIZE," { \"latitude\": \"%f\",\"longtitude\": \"%f\",  \"capacity\": \"%d\", \"state\": \"%s\"} " ,lat2,long2,cap2, "open");
-    // client.publish("wasteManagement/waste2/status", waste2, true);
-
-    snprintf (waste3, MSG_BUFFER_SIZE," { \"latitude\": \"%f\",\"longtitude\": \"%f\",  \"capacity\": \"%d\", \"state\": \"%s\"} " ,lat3,long3,cap3,"open");
-    client.publish("wasteManagement/waste3/status", waste3, true);
-
-    snprintf (waste4, MSG_BUFFER_SIZE," { \"latitude\": \"%f\",\"longtitude\": \"%f\",  \"capacity\": \"%d\", \"state\": \"%s\"} " ,lat4,long4,cap4, "open");
-    client.publish("wasteManagement/waste4/status", waste4, true);
-
-    snprintf (waste5, MSG_BUFFER_SIZE," { \"latitude\": \"%f\",\"longtitude\": \"%f\",  \"capacity\": \"%d\", \"state\": \"%s\"} " ,lat5,long5,cap5, "open");
-    client.publish("wasteManagement/waste5/status", waste5, true);
-
-    snprintf (waste6, MSG_BUFFER_SIZE," { \"latitude\": \"%f\",\"longtitude\": \"%f\",  \"capacity\": \"%d\", \"state\": \"%s\"} " ,lat6,long6,cap6, "open");
-    client.publish("wasteManagement/waste6/status", waste6, true); 
 }
-
 void wasteBinData(){
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -202,57 +150,39 @@ void wasteBinData(){
   else if (distance > deepOfWaste && distance < 560){
     distance = deepOfWaste;
   }
-  capacity = 100 - (distance/deepOfWaste)*100;
+  capacity2 = 100 - (distance/deepOfWaste)*100;
   delay(500);
 
   // if waste is full, close the bin.
-  if (capacity == 100){
-    if (!strcmp(state1, open)){ // equal to (strcmp(state1, open) == 0)
+  if (capacity2 == 100){
+    if (!strcmp(state2, open)){ // equal to (strcmp(state1, open) == 0)
+
+      // close the pin
+      myservo.write(0); // Start turning clockwise
+      delay(TURN_TIME); // Go on turning for the right duration
+      myservo.write(90);// Stop turning
+      
       for(int i=0; i <6; i++){
           stateChange[i] = close[i];
         }
         Serial.println("close");
     }
-
   }
-
-  // fake cap of waste2,3,4,5,6
+  // fake cap2
   unsigned long now = millis();
   if (now - lastMsg > 3000) {
     lastMsg = now;
-    cap1++;
-    // cap2++;
-    cap3++;
-    cap4+=3;
-    cap5+=5;
-    cap6+=10;
-    if(cap1 > 100){
-      cap1 = 0;
-    }
-    // if(cap2 > 100){
-    //   cap2 = 0;
-    // }
-    if(cap3 > 100){
-      cap3 = 0;
-    }
-    if(cap4 > 100){
-      cap4 = 0;
-    }
-    if(cap5 > 100){
-      cap5 = 0;
-    }
-    if(cap6 > 100){
-      cap6 = 0;
+    cap2 +=5;
+    if(cap2 > 100){
+      cap2 = 0;
     }
   }
 }
-
 void stateAssign(char *state){
   for(int i=0; i <7; i++){
     state[i] = stateChange[i];
   }
 }
-
 void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   Serial.begin(115200);
