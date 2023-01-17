@@ -235,7 +235,7 @@ $(document).ready(async function(){
         var i = 0;
         setInterval(async () => {
             if(path.length != 0){
-                /*navigator.geolocation.getCurrentPosition(async function getPosition(position) {
+                navigator.geolocation.getCurrentPosition(async function getPosition(position) {
                     cLat = position.coords.latitude;
                     cLng = position.coords.longitude;
                     if (cMarker) {
@@ -247,8 +247,8 @@ $(document).ready(async function(){
                     path = [];
                     path = await updateSession(loc);
                     route.setWaypoints(path);
-                });*/
-                if (cMarker) {
+                });
+                /*if (cMarker) {
                     map.removeLayer(cMarker);
                 }
                 cMarker = L.marker([fakeLoc[i].lat, fakeLoc[i].lng]).addTo(map);
@@ -260,7 +260,7 @@ $(document).ready(async function(){
                 i++;
                 if(i > 2){
                     i = 0;
-                }
+                }*/
             }
             else{
                 if (cMarker) {

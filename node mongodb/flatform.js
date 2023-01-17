@@ -15,20 +15,19 @@ async function main(){
         try{
             await client.connect();
             if(topicArr.length > 2){
-		if(topicArr[2] === "state"){
-                	await upsertListingByName(client, name, {
-                    		"state": JSON.parse(payload.toString())
-                	});
-		}
+                if(topicArr[2] === "status"){
+                    let jsonObject = JSON.parse(payload.toString());
+                    console.log(jsonObject);
+                    await upsertListingByName(client, name, {
+                        "latitude": jsonObject.latitude,
+                        "longtitude": jsonObject.longtitude,
+                        "capacity": jsonObject.capacity,
+                        "state": jsonObject.state
+                    });
+                }
             }
             else{
-                let jsonObject = JSON.parse(payload.toString());
-                console.log(jsonObject);
-                await upsertListingByName(client, name, {
-                    "latitude": jsonObject.latitude,
-                    "longtitude": jsonObject.longtitude,
-                    "capacity": jsonObject.capacity
-                });
+                
             }
         }catch(e){
             console.error(e);
