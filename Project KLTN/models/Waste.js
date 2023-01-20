@@ -1,0 +1,33 @@
+const mongoose = require('mongoose');
+
+var wasteSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        default: ""
+    },
+    latitude: Number,
+    longitude: Number,
+    capacity: {
+        type: Number,
+        default: 660
+    },
+    fullness: {
+        type: Number,
+        default: 0
+    },
+    state: Boolean,
+    rating: {
+        type: Number,
+        default: -1
+    },
+    area_id: {
+        type: String,
+        default: ""
+    },
+    penalty_time: {
+        type: Number,
+        default: 0
+    }
+}, { versionKey: false });
+
+module.exports = mongoose.model("Waste", wasteSchema);
