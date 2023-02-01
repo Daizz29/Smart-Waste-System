@@ -71,11 +71,12 @@ function sendWs(){
     setTimeout(() => {
         document.getElementById("on-off").disabled = false;
         let currentState = document.getElementById("stateInput").value;
-        if(currentState){
-            document.getElementById('on-off').checked = false;
-        }
-        else{
+        console.log(currentState);
+        if(currentState === "false"){
             document.getElementById('on-off').checked = true;
+        }
+        else if(currentState === "true"){
+            document.getElementById('on-off').checked = false;
         }
         if(document.getElementById("loader").style.display === "inline-block"){
             document.getElementById("loader").style.display = "none"
@@ -96,6 +97,7 @@ var redIcon = new LeafIcon({iconUrl: './Icon/red-bin-icon.png'});
 
 $(document).ready(async function(){
     // declare variables
+    console.log(true);
     var socket = io();
     var map = L.map("map").setView([loc[0].latitude, loc[0].longitude], 17);
     map.on("click", () =>{
@@ -177,7 +179,7 @@ $(document).ready(async function(){
             }
             if(msg.data.state != null){
                 document.getElementById("stateInput").value = msg.data.state;
-                if(!msg.data.state){
+                if(msg.data.state === false){
                     document.getElementById("on-off").checked = true;
                 }
                 else{

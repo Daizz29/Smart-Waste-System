@@ -7,7 +7,7 @@ $(document).ready(function(){
     else if(acc.accType == 2){
         document.getElementById("accType").innerHTML = "Manager";
     }
-    document.getElementById("area").innerHTML = area.name;
+    document.getElementById("area").innerHTML = area;
 
 
 });

@@ -8,7 +8,6 @@ var wasteController = {
         const result = await Waste.find({
             area_id: id
         });
-        console.log(result);
         return result;
     },
 
@@ -25,9 +24,37 @@ var wasteController = {
     },
     
     updatePenaltyTime: async function(id, pTime){
+        var now = new Date();
+        var curDate = now.getDate() + "/" + (now.getMonth()+1) + "/" + now.getFullYear();
+        var bin = await Waste.findById(id);
+        console.log(bin);
+        var pTimeList = bin.penalty_time;
+        console.log(pTimeList);
+        if(pTimeList.length > 0){
+            if(curDate === pTimeList[pTimeList.length - 1].date){
+                pTimeList[pTimeList.length - 1].time += (now.getTime() - pTime.getTime())/1000;
+            }
+            else{
+                if(pTimeList.length == 7){
+                    pTimeList.splice(0, 1);
+                }
+                const newpTime = {
+                    time: (now.getTime() - pTime.getTime())/1000,
+                    date: curDate
+                };
+                pTimeList.push(newpTime);
+            }
+        }
+        else{
+            const newpTime = {
+                time: (now.getTime() - pTime.getTime())/1000,
+                date: curDate
+            };
+            pTimeList.push(newpTime);
+        }
         await Waste.updateOne(
-            {_id: ObjectId(id)},
-            {$set: {penalty_time: pTime}}
+            {_id: id},
+            {$set: {penalty_time: pTimeList}}
         );
     }
 

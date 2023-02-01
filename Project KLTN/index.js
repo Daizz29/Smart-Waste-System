@@ -41,13 +41,14 @@ io.on('connection', (socket) =>{
         console.log(name);
         console.log(state);
         var stateCtrl = "";
-        if(state){
+        if(state === "true"){
             stateCtrl = false;
         }
-        else{
+        else if(state === "false"){
             stateCtrl = true;
         }
-        const data = {
+        console.log(stateCtrl);
+        var data = {
             state: stateCtrl
         }
         var MQTTclient = mqtt.connect('mqtt://171.244.173.204:1884');
@@ -97,48 +98,68 @@ const carStream = mongoose.model('Car').watch([]);
 wasteStream.on('change', async (next) =>{
     console.log(next.documentKey);
     console.log(next.updateDescription.updatedFields);
+    var key = next.documentKey;
+    var dataUpdated = next.updateDescription.updatedFields;
 
     io.emit('waste change', {
-        id: next.documentKey,
-        data: next.updateDescription.updatedFields
+        id: key,
+        data: dataUpdated
     });
-    var waste = await mongoose.model('Waste').findById(next.documentKey._id);
-    var list = await wasteController.getByAreaId(waste.area_id);
-    var car = await carController.getByAreaId(waste.area_id);
-    var area = await areaController.getById(waste.area_id);
-    var path = car[0].routing;
-    var index = path.findIndex(e => JSON.stringify(e._id) === JSON.stringify(waste._id));
-    var start = car[0].position;
-    var dest = {
-        latitude: area.location[0],
-        longitude: area.location[1]
-    };
-    if(index != -1){
-        if(waste.fullness == 0){
-            path.splice(index, 1);
-            /*if(path.length == 2 && algorithm.distanceBetween2Node(start, dest) == 0){
-                path = [];
-            }*/
-        }
-        else{
-            path[index].fullness = waste.fullness;
-        }
-        await carController.updateRoute(car[0]._id, path);
-    }
-    else{
-        if(waste.fullness >= 70){
-            var temp = path;
-            path = [start];
-            if(algorithm.checkForRouting(list, path)){
-                path = await algorithm.routing(path);
-                path.push(dest);
-                await carController.updateRoute(car[0]._id, path);
+
+    if(dataUpdated.fullness != null){
+        var waste = await mongoose.model('Waste').findById(next.documentKey._id);
+        var list = await wasteController.getByAreaId(waste.area_id);
+        var car = await carController.getByAreaId(waste.area_id);
+        var area = await areaController.getById(waste.area_id);
+        var path = car[0].routing;
+        var index = path.findIndex(e => JSON.stringify(e._id) === JSON.stringify(waste._id));
+        var start = car[0].position;
+        var dest = {
+            latitude: area.location[0],
+            longitude: area.location[1]
+        };
+        if(index != -1){
+            if(waste.fullness == 0){
+                path.splice(index, 1);
             }
             else{
-                path = temp;
+                path[index].fullness = waste.fullness;
+            }
+            await carController.updateRoute(car[0]._id, path);
+        }
+        else{
+            if(waste.fullness >= 70){
+                path = [start];
+                if(algorithm.checkForRouting(list, path)){
+                    path = await algorithm.routing(path);
+                    path.push(dest);
+                    await carController.updateRoute(car[0]._id, path);
+                }
+            }
+        }
+        
+        if(dataUpdated.fullness >= 90){
+            var record = await mongoose.model('Penalty_record').findOne({
+                bin_id: key._id.toString()
+            });
+            if(record == null){
+                await mongoose.model('Penalty_record').create({
+                    bin_id: key._id.toString(),
+                    time: new Date()
+                });
+            }
+        }
+        else if(dataUpdated.fullness == 0){
+            var record = await mongoose.model('Penalty_record').findOne({
+                bin_id: key._id.toString()
+            });
+            if(record != null){
+                await mongoose.model('Penalty_record').deleteOne(record);
+                await wasteController.updatePenaltyTime(key._id, record.time);
             }
         }
     }
+    
 
 });
 

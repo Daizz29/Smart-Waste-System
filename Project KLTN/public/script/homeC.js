@@ -71,11 +71,11 @@ function sendWs(){
     setTimeout(() => {
         document.getElementById("on-off").disabled = false;
         let currentState = document.getElementById("stateInput").value;
-        if(currentState){
-            document.getElementById('on-off').checked = false;
-        }
-        else{
+        if(currentState === "false"){
             document.getElementById('on-off').checked = true;
+        }
+        else if(currentState === "true"){
+            document.getElementById('on-off').checked = false;
         }
         if(document.getElementById("loader").style.display === "inline-block"){
             document.getElementById("loader").style.display = "none"
@@ -142,7 +142,13 @@ $(document).ready(async function(){
                 marker = marker.bindPopup("Start point");
                 setTimeout(() => {
                 marker.openPopup();
-                }, 5000);
+                }, 1000);
+            }
+            else if(i == 1){
+                marker = marker.bindPopup("Next point");
+                setTimeout(() => {
+                marker.openPopup();
+                }, 3000);
             }
             return marker;
         },

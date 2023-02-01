@@ -42,28 +42,38 @@ var carController = {
         );
     },
 
-    updateOptime: async function(car_id, opTime){
+    updateOpdist: async function(car_id, opDist){
         var now = new Date();
-        var curDate = now.getDate() + "/" + now.getMonth() + "/" + now.getFullYear();
-        var optimeList = await Car.findOne({
+        var curDate = now.getDate() + "/" + (now.getMonth()+1) + "/" + now.getFullYear();
+        var car = await Car.findOne({
             _id: car_id
-        }).opTime;
-        if(curDate === optimeList[optimeList.length - 1].date){
-            optimeList[optimeList.length - 1].time = opTime;
+        });
+        var opdistList = car.opDist;
+        if(opdistList.length > 0){
+            if(curDate === opdistList[opdistList.length - 1].date){
+                opdistList[opdistList.length - 1].distance += opDist;
+            }
+            else{
+                if(opdistList.length == 7){
+                    optimeList.splice(0, 1);
+                }
+                const newOpdist = {
+                    distance: opDist,
+                    date: curDate
+                };
+                opdistList.push(newOpdist);
+            }
         }
         else{
-            if(optimeList.length == 30){
-                optimeList.splice(0, 1);
-            }
-            const newOpTime = {
-                time: opTime,
+            const newOpdist = {
+                distance: opDist,
                 date: curDate
             };
-            optimeList.push(newOpTime);
+            opdistList.push(newOpdist);
         }
         await Car.updateOne(
             {_id: car_id},
-            {$set: {opTime: optimeList}}
+            {$set: {opDist: opdistList}}
         );
     }
 

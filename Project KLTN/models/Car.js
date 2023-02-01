@@ -15,7 +15,7 @@ var carSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    opTime: {
+    opDist: {
         type: Array,
         default: []
     },

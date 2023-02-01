@@ -21,6 +21,7 @@ router.get('/', async (req, res) =>{
         res.render('main_views/homeM', {
             script: "homeM.js",
             style: "homeM.css",
+            accType: "manager",
             list: encodeURIComponent(JSON.stringify(listBin)),
             path: encodeURIComponent(JSON.stringify(path))
         });
@@ -37,8 +38,9 @@ router.get('/info', async (req, res) =>{
         res.render('main_views/infoM', {
             script: "infoM.js",
             style: "infoM.css",
+            accType: "manager",
             acc: encodeURIComponent(JSON.stringify(managerAcc)),
-            area: encodeURIComponent(JSON.stringify(area[0]))
+            area: area[0].name
         });
     }
     else{
@@ -53,6 +55,7 @@ router.get('/listBin', async (req, res) =>{
         res.render('main_views/listBinM', {
             script: "listBinM.js",
             style: "listBinM.css",
+            accType: "manager",
             list: encodeURIComponent(JSON.stringify(listBin))
         });
     }
@@ -68,6 +71,7 @@ router.get('/listCar', async (req, res) =>{
         res.render('main_views/listBinM', {
             script: "listCarM.js",
             style: "listCarM.css",
+            accType: "manager",
             list: encodeURIComponent(JSON.stringify(cars))
         });
     }

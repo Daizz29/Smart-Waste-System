@@ -17,3 +17,4 @@ require('./Waste');
 require('./Account');
 require('./Car');
 require('./Area');
+require('./Penalty_record');
