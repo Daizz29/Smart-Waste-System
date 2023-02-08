@@ -228,13 +228,14 @@ $(document).ready(async function(){
     });
 
     // Track current location
-    //const fakeLoc = [{lat: 21.03982937176743, lng: 105.84714471875014}, {lat: 21.02437959665869, lng: 105.85681042947161}, {lat: 21.022617017653715, lng: 105.85056624739211}];
+    const fakeLoc = [{lat: 21.03982937176743, lng: 105.84714471875014}, {lat: 21.02437959665869, lng: 105.85681042947161}, {lat: 21.022617017653715, lng: 105.85056624739211}];
     if (!navigator.geolocation) {
         alert("Your browser doesn't support geolocation feature!")
     } else {
+        var i = 0;
         setInterval(async () => {
             if(path.length != 0){
-                navigator.geolocation.getCurrentPosition(async function getPosition(position) {
+                /*navigator.geolocation.getCurrentPosition(async function getPosition(position) {
                     cLat = position.coords.latitude;
                     cLng = position.coords.longitude;
                     if (cMarker) {
@@ -246,7 +247,15 @@ $(document).ready(async function(){
                     path = [];
                     path = await updateSession(loc);
                     route.setWaypoints(path);
-                });
+                });*/
+                if(cMarker){
+                    map.removeLayer(cMarker);
+                }
+                cMarker = L.marker([fakeLoc[i].lat, fakeLoc[0].lng]).addTo(map);
+                loc.splice(0, 1, fakeLoc[0]);
+                path = [];
+                path = await updateSession(loc);
+                route.setWaypoints(path);
             }
             else{
                 if (cMarker) {
@@ -254,7 +263,7 @@ $(document).ready(async function(){
                 }
             }
         }, 5000);
-    };
+    }
 
     // onClick on-off switch
     document.getElementById("on-off").addEventListener("click", sendWs);
