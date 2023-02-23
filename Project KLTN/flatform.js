@@ -46,12 +46,31 @@ async function main(){
 main().catch(console.error);
 
 async function upsertListingByName(client, nameOfListing, updatedListing){
-    const result = await client.db("kltn_db").collection("wastes").updateOne({name: nameOfListing}, {$set: updatedListing}, {upsert: true});
-    console.log(`${result.matchedCount} docs matched`);
-    if(result.upsertedCount > 0){
-        console.log(`A doc was inserted with id ${result.upsertedId}`);
+    const bin = await client.db("kltn_db").collection("wastes").findOne({
+        name: nameOfListing
+    });
+    if(bin == null){
+        const result = await client.db("kltn_db").collection("wastes").insertOne({
+            "name": nameOfListing,
+            "latitude": updatedListing.latitude,
+            "longitude": updatedListing.longitude,
+            "capacity": 660,
+            "fullness": updatedListing.fullness,
+            "state": updatedListing.state,
+            "rating": -1,
+            "area_id": "63b4f7d6a8ed20ee251a9831",
+            "penalty_time": []
+        });
     }
     else{
-        console.log(`${result.modifiedCount} docs modified`);
+        const result = await client.db("kltn_db").collection("wastes").updateOne({name: nameOfListing}, {$set: updatedListing}, {upsert: true});
+        console.log(`${result.matchedCount} docs matched`);
+        if(result.upsertedCount > 0){
+            console.log(`A doc was inserted with id ${result.upsertedId}`);
+        }
+        else{
+            console.log(`${result.modifiedCount} docs modified`);
+        }
     }
+    
 }

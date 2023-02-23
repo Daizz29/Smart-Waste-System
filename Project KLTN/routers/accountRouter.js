@@ -9,23 +9,23 @@ router.post('/login', async (req, res) =>{
         req.session.acctype = result.accType;
         if(result.accType == 2){
             req.session.save(() =>{
-                res.redirect("http://localhost:3000/manager");
+                res.redirect("http://115.78.92.253:3000/manager");
             });
         }
         else if (result.accType == 1){
             req.session.save(() =>{
-                res.redirect("http://localhost:3000/collector");
+                res.redirect("http://115.78.92.253:3000/collector");
             });
         }
     }
     else{
-        res.redirect("http://localhost:3000");
+        res.redirect("http://115.78.92.253:3000");
     }
 });
 
 router.get('/logout', async (req, res) =>{
     req.session.destroy(() => {
-        res.redirect("http://localhost:3000");
+        res.redirect("http://115.78.92.253:3000");
     })
 });
 

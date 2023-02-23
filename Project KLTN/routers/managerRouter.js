@@ -27,7 +27,7 @@ router.get('/', async (req, res) =>{
         });
     }
     else{
-        res.redirect("http://localhost:3000");
+        res.redirect("http://115.78.92.253:3000");
     }
 });
 
@@ -44,7 +44,7 @@ router.get('/info', async (req, res) =>{
         });
     }
     else{
-        res.redirect("http://localhost:3000");
+        res.redirect("http://115.78.92.253:3000");
     }
 });
 
@@ -60,7 +60,7 @@ router.get('/listBin', async (req, res) =>{
         });
     }
     else{
-        res.redirect("http://localhost:3000");
+        res.redirect("http://115.78.92.253:3000");
     }
 });
 
@@ -76,7 +76,7 @@ router.get('/listCar', async (req, res) =>{
         });
     }
     else{
-        res.redirect("http://localhost:3000");
+        res.redirect("http://115.78.92.253:3000");
     }
 });
 

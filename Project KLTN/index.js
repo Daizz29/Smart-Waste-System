@@ -62,10 +62,10 @@ io.on('connection', (socket) =>{
 app.get("/", (req, res) =>{
     if(req.session.userid){
         if(req.session.acctype == 2){
-            res.redirect("http://localhost:3000/manager");
+            res.redirect("http://115.78.92.253:3000/manager");
         }
         else if(req.session.acctype == 1){
-            res.redirect("http://localhost:3000/collector");
+            res.redirect("http://115.78.92.253:3000/collector");
         }
     }
     else{
