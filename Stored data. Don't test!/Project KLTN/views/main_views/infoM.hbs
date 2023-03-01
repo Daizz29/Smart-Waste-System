@@ -1,0 +1,46 @@
+
+<div class="contain">
+    <h1>Account information</h1>
+    <div class="mainInfo">
+        <h2>General</h2>
+        <div class="field">
+            <div class="label">ID:</div>
+            <div class="content">
+                <span id="id">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">Username:</div>
+            <div class="content">
+                <span id="username">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">Account type:</div>
+            <div class="content">
+                <span id="accType">fadfsafd</span>
+            </div>
+        </div>
+        <h2>Area information</h2>
+        <div class="field">
+            <div class="label">Area:</div>
+            <div class="content">
+                <span id="area">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field">
+            <a href="http://localhost:3000/manager/listBin">List bin</a>
+        </div>
+        <div class="field">
+            <a href="http://localhost:3000/manager/listCar">List car</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    var acc = decodeURIComponent("{{{acc}}}");
+    acc = JSON.parse(acc);
+    console.log(acc);
+    var area = "{{{area}}}";
+    console.log(area);
+</script>

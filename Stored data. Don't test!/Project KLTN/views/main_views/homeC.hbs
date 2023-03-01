@@ -1,0 +1,37 @@
+
+<div class="map">
+    <div id="infor">
+        <h2 id="name"></h2>
+        <input type="hidden" name="name" id="nameInput" />
+        <input type="hidden" name="id" id="idInput" />
+        <input type="hidden" name="state" id="stateInput" />
+        <input type="hidden" name="cap" id="capInput" />
+        <br>
+        <div class="field">
+            <span>Capacity: <span id="cap"></span>%<br/>
+        </div>
+        <div class="field">
+            <div class="state_field">
+                <span>State: </span><!--<span id="state"></span>-->
+            </div>
+            <div id="open-close">
+                <input type="checkbox" name="state" class="switch-toggle" id="on-off" >
+            </div> 
+            <div class="loader_container">
+                <span id="loader"></span>
+            </div>
+        </div>
+    </div>
+    <div id="map"></div> 
+</div>
+<script>
+    
+    
+    var loc = decodeURIComponent("{{{list}}}");
+    loc = JSON.parse(loc);
+    console.log(loc);
+    var path = decodeURIComponent("{{{path}}}");
+    path = JSON.parse(path);
+    var pos = decodeURIComponent("{{{position}}}");
+    pos = JSON.parse(pos);
+</script>

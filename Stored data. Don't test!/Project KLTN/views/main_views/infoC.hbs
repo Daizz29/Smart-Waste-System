@@ -1,0 +1,61 @@
+
+<div class="contain">
+    <h1>Account information</h1>
+    <div class="mainInfo">
+        <h2>General</h2>
+        <div class="field">
+            <div class="label">ID:</div>
+            <div class="content">
+                <span id="id">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">Username:</div>
+            <div class="content">
+                <span id="username">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">Account type:</div>
+            <div class="content">
+                <span id="accType">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">Area:</div>
+            <div class="content">
+                <span id="area">fadfsafd</span>
+            </div>
+        </div>
+        <h2>Car information</h2>
+        <div class="field">
+            <div class="label">Car ID:</div>
+            <div class="content">
+                <span id="carid">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">Capacity:</div>
+            <div class="content">
+                <span id="cap">fadfsafd</span>
+            </div>
+        </div>
+        <div class="field" style="margin-bottom: 100px;">
+            <div class="label" style="display: block">Operating distance:</div>
+            <div class="content" style="display:block; margin-top:50px; width:100%">
+                <canvas id="opChart" style="width:100%;max-width:800px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var acc = decodeURIComponent("{{{acc}}}");
+    acc = JSON.parse(acc);
+    console.log(acc);
+    var car = decodeURIComponent("{{{car}}}");
+    car = JSON.parse(car);
+    console.log(car);
+    var area = "{{{area}}}";
+    console.log(area);
+</script>

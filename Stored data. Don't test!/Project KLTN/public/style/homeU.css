@@ -1,0 +1,40 @@
+.map {
+    height: 100%;
+    width: auto;
+    margin-left: 0px;
+    position: relative;
+    z-index: 1;
+}
+#map {
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+#infor {
+    margin-left: 0px;
+    width: 250px;
+    display: none;
+    z-index: 2;
+    background-color: #eeeeee;
+    position: absolute;
+    border-radius: 10px;
+    right: 10px;
+    top: 10px;
+    opacity: 0.7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h2{
+    color: #00b300;
+    font-weight: 700;
+    text-align: center;
+    padding: 20px 0 20px 0;
+    border-bottom: 1px solid silver;
+}
+.field{
+    font-size: 20px;
+    padding-left: 20px;
+    padding-top: 5px;
+    margin: 10px 0;
+    position: relative;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,21 @@
+
+<div class="contain">
+    <div class="list">
+        <h2>LIST BIN</h2>
+        <ul id="listBin"></ul>
+        <span id="overall">Overall</span>
+    </div>
+    <div class="content">
+        <h2>PENALTY TIME</h2>
+        <h2 id="binName">Overall</h2>
+        <div class="penTime" id="penTime">
+                <canvas id="ptChart" style="width:100%;max-width:700px"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    var list = decodeURIComponent("{{{list}}}");
+    list = JSON.parse(list);
+    console.log(list);
+</script>

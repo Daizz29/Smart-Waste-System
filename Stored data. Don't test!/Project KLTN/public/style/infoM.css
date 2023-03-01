@@ -1,0 +1,48 @@
+.contain{
+    width: auto;
+    margin-left: 50px;
+    position: relative;
+    z-index: 1;
+}
+h1{
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: azure;
+}
+h2{
+    padding-left: 20px;
+    padding-top: 10px;
+}
+.field{
+    margin-left: 100px;
+    margin-top: 5px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    border-bottom: 1px solid silver;
+    font-weight: 700;
+}
+.field a{
+    text-decoration: none;
+}
+.field a:hover{
+    color: chartreuse;
+}
+.label{
+    width: 200px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.content{
+    display: inline-block;
+    vertical-align: middle;
+}
+.mainInfo{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    width: 1000px;
+    background-color: white;
+    border-radius: 10px;
+}

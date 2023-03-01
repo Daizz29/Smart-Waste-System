@@ -1,0 +1,20 @@
+
+<div class="contain">
+    <div class="list">
+        <h2>LIST CAR</h2>
+        <ul id="listCar"></ul>
+        <span id="overall">Overall</span>
+    </div>
+    <div class="content">
+        <h2>OPERATING DISTANCE</h2>
+        <div class="opDist" id="opDist">
+                <canvas id="odChart" style="width:100%;max-width:700px"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    var list = decodeURIComponent("{{{list}}}");
+    list = JSON.parse(list);
+    console.log(list);
+</script>
